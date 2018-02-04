@@ -7,10 +7,14 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
+
+from pure_pagination import Paginator, PageNotAnInteger
+
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm,UploadImageForm,UserInfoForm
 from users.models import UserProfile, EmailVerifyRecord
-from operation.models import UserCourse,UserFavorite
+from operation.models import UserCourse,UserFavorite,UserMessage
 from organization.models import CourseOrg,Teacher
+from courses.models import Course
 
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
@@ -76,6 +80,11 @@ class RegisterView(View):
             user_profile.is_active = False
             user_profile.save()
             send_register_email(user_name, 'register')
+            #写入欢迎注册消息
+            user_message = UserMessage()
+            user_message.user=user_profile.id
+            user_message.message = '欢迎注册MOOC'
+            user_message.save()
             return redirect(reverse('users:login'))
         return render(request, 'register.html', {'register_form': register_form})
 
@@ -242,4 +251,33 @@ class MyFavTeacherView(LoginRequiredMixin,View):
         teacher_list = [Teacher.objects.get(id=fav_teacher.fav_id) for fav_teacher in fav_teachers]
         return render(request,'usercenter-fav-teacher.html',{
             "teacher_list":teacher_list,
+        })
+
+class MyFavCourseView(LoginRequiredMixin,View):
+    #我收藏的课程
+    def get(self,request):
+
+        fav_courses = UserFavorite.objects.filter(user=request.user,fav_type=1,)
+        course_list = [Course.objects.get(id=fav_course.fav_id) for fav_course in fav_courses]
+        return render(request,'usercenter-fav-course.html',{
+            "course_list":course_list,
+        })
+
+class MymessageView(LoginRequiredMixin,View):
+    #我的消息
+    def get(self,request):
+        all_message = UserMessage.objects.filter(user=request.user.id)
+        # 课程机构分页
+        try:
+            # 将会在get请求中自动加上page参数
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # params:per_page，每一页的数量(这里为5)
+        p = Paginator(all_message, 5, request=request)
+
+        messages = p.page(page)
+        return render(request,'usercenter-message.html',{
+            'messages':messages,
         })

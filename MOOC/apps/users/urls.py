@@ -3,7 +3,7 @@ from django.conf.urls import url
 
 from users.views import LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetUserView
 from users.views import UploadImageView,ModifyPwdView,LogoutView,UserinfoView,UpdatePwdView,SendEmailCodeView
-from users.views import UpdateEmailView,MyCourseView,MyFavOrgView,MyFavTeacherView
+from users.views import UpdateEmailView,MyCourseView,MyFavOrgView,MyFavTeacherView,MyFavCourseView,MymessageView
 
 
 urlpatterns =[
@@ -31,4 +31,8 @@ urlpatterns =[
     url(r'^myfav/org/$',MyFavOrgView.as_view(),name='myfav_org'),
     #我收藏的授课讲师
     url(r'^myfav/teacher/$',MyFavTeacherView.as_view(),name='myfav_teacher'),
+    #我收藏的课程
+    url(r'^myfav/course/$',MyFavCourseView.as_view(),name='myfav_course'),
+    #我的消息
+    url(r'^mymessage/$',MymessageView.as_view(),name='mymessage'),
 ]

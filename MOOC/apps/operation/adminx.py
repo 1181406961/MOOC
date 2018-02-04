@@ -3,9 +3,9 @@ from  .models import UserAsk,CourseComment,UserFavorite,UserMessage,UserCourse
 import xadmin
 
 class UserAskAdmin(object):
-    list_display = ['lesson', 'mobile', 'course_name', 'add_time']
-    search_fields = ['lesson', 'mobile','course_name']
-    list_filter = ['lesson', 'mobile', 'course_name', 'add_time']
+    list_display = ['name', 'mobile', 'course_name', 'add_time']
+    search_fields = ['name', 'mobile','course_name']
+    list_filter = ['name', 'mobile', 'course_name', 'add_time']
 
 class CourseCommentAdmin(object):
 
@@ -22,7 +22,7 @@ class UserFavoriteAdmin(object):
 class UserMessageAdmin(object):
     list_display = ['user', 'message', 'has_read', 'add_time']
     search_fields = ['user', 'message', 'has_read']
-    list_filter = ['user__username', 'message', 'has_read', 'add_time']
+    list_filter = ['user', 'message', 'has_read', 'add_time']
 
 class UserCourseAdmin(object):
     list_display = ['user', 'course',  'add_time']

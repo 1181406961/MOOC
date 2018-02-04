@@ -5,7 +5,7 @@ from django.views.generic import View
 from django.db.models import Q
 
 
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from pure_pagination import Paginator, PageNotAnInteger
 
 from .models import CourseOrg,CityDict,Teacher
 from .forms import UserAskForm
