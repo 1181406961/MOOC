@@ -11,7 +11,7 @@ from django.contrib.auth.hashers import make_password
 from pure_pagination import Paginator, PageNotAnInteger
 
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm,UploadImageForm,UserInfoForm
-from users.models import UserProfile, EmailVerifyRecord
+from users.models import UserProfile, EmailVerifyRecord, Banner
 from operation.models import UserCourse,UserFavorite,UserMessage
 from organization.models import CourseOrg,Teacher
 from courses.models import Course
@@ -50,7 +50,7 @@ class LoginView(View):
                     # -1是没找到
                     if next_html.find('next') !=-1:
                         return redirect('%s'%next_html.split('=')[1])
-                    return redirect(reverse('index'))
+                    return redirect(reverse('users:index'))
                 else:
                     return render(request, 'login.html', {'msg': u'用户未激活！'})
             else:
@@ -150,7 +150,7 @@ class ModifyPwdView(View):
 class LogoutView(View):
     def get(self,request):
         logout(request)
-        return redirect(reverse('index'))
+        return redirect(reverse('users:index'))
 
 
 class UserinfoView(LoginRequiredMixin,View):
@@ -281,3 +281,31 @@ class MymessageView(LoginRequiredMixin,View):
         return render(request,'usercenter-message.html',{
             'messages':messages,
         })
+
+class IndexView(View):
+    #首页
+    def get(self,request):
+        all_banners = Banner.objects.all().order_by('index')
+        courses = Course.objects.filter(is_banner=False)[:6]
+        banner_courses = Course.objects.filter(is_banner=True)[:3]
+        course_orgs = CourseOrg.objects.all()[:15]
+        return render(request,'index.html',{
+            'all_banners':all_banners,
+            'courses':courses,
+            'banner_courses':banner_courses,
+            'course_orgs':course_orgs
+        })
+
+def page_not_found(request):
+    #全局处理404
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html',{})
+    response.status_code =404
+    return response
+
+def page_error(request):
+    #全局处理500
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html',{})
+    response.status_code =500
+    return response

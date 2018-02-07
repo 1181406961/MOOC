@@ -22,20 +22,21 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 
 from MOOC.settings import MEDIA_ROOT
+
 urlpatterns = [
     #xadmin
     url(r'^xadmin/',xadmin.site.urls),
-    #使用专门的模板类视图，来请求静态文件
-    url(r'^$',TemplateView.as_view(template_name='index.html'),name='index'),
+
     #user相关
-    url(r'users/',include('users.urls',namespace='users')),
+    url(r'^',include('users.urls',namespace='users')),
     #验证码视图
     url(r'^captcha/', include('captcha.urls')),
     #课程机构url
     url(r'^org/', include('organization.urls',namespace='org')),
     #课程URL
     url(r'^course/', include('courses.urls',namespace='course')),
-
+    #富文本相关url
+    url(r'ueditor/',include('DjangoUeditor.urls')),
     #配置文件上传处理函数params：document_root：文件路径
     url(r'^media/(?P<path>.*)$',serve,{'document_root':MEDIA_ROOT})
 ]

@@ -11,7 +11,8 @@ class CourseOrgAdmin(object):
     list_display = ['name', 'desc', 'click_nums','fav_nums','image','address','city','add_time']
     search_fields = ['name', 'desc', 'click_nums','fav_nums','image','address','city']
     list_filter = ['name', 'desc', 'click_nums','fav_nums','image','address','city__name','add_time']
-
+    #在xadmin中当有外键指向org时，以一种ajax的方式加载。
+    relfield_style = 'fk_ajax'
 class TeacherAdmin(object):
 
     list_display = ['org', 'name', 'work_years', 'work_position', 'points', 'click_nums', 'fav_nums', 'add_time']

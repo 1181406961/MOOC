@@ -64,7 +64,7 @@
 
             <div class="middle">
                 <div class="wp">
-                    <a href="{% url 'index' %}"><img class="fl" src="/static/images/logo.jpg"/></a>
+                    <a href="{% url 'users:index' %}"><img class="fl" src="/static/images/logo.jpg"/></a>
                     <div class="searchbox fr">
                         <div class="selectContainer fl">
                             <span class="selectOption" id="jsSelectOption" data-value="course">
@@ -87,7 +87,7 @@
                 <div class="nav">
                     <div class="wp">
                         <ul>
-                            <li class="{% ifequal request.path '/' %}active{% endifequal %}"><a href="{% url 'index' %}">首页</a></li>
+                            <li class="{% ifequal request.path '/' %}active{% endifequal %}"><a href="{% url 'users:index' %}">首页</a></li>
                             <li class="{% ifequal request.path|slice:'7' '/course' %}active{% endifequal %}">
                                 <a href="{% url 'course:course_list' %}">
                                     公开课<img class="hot" src="/static/images/nav_hot.png">

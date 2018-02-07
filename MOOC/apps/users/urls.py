@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 
-from users.views import LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetUserView
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetUserView, IndexView
 from users.views import UploadImageView,ModifyPwdView,LogoutView,UserinfoView,UpdatePwdView,SendEmailCodeView
 from users.views import UpdateEmailView,MyCourseView,MyFavOrgView,MyFavTeacherView,MyFavCourseView,MymessageView
 
 
 urlpatterns =[
+    #首页
+    url(r'^$', IndexView.as_view(), name='index'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
 
@@ -35,4 +37,5 @@ urlpatterns =[
     url(r'^myfav/course/$',MyFavCourseView.as_view(),name='myfav_course'),
     #我的消息
     url(r'^mymessage/$',MymessageView.as_view(),name='mymessage'),
+
 ]
